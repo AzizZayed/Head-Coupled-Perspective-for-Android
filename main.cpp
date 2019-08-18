@@ -23,6 +23,9 @@ int main(int argc, char *argv[])
 
     QQmlApplicationEngine engine;
 
+    engine.rootContext()->setContextProperty("w", imageWidth);
+    engine.rootContext()->setContextProperty("h", imageHeight);
+
     const QUrl url(QStringLiteral("qrc:/main.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
                      &app, [url](QObject *obj, const QUrl &objUrl) {

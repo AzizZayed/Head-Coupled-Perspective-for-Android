@@ -9,9 +9,6 @@ Window {
     width: 1080 //change for your screen
     height: 2280 //change for your screen
 
-    property int w: 240 // camera resolution width
-    property int h: 320 // camera resolution height
-
     signal frameReady(var frame)
 
     Camera
