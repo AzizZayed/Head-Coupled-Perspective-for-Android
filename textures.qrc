@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/">
+        <file>checkerboard.jpg</file>
+        <file>gridpat.png</file>
+        <file>rubix_cube_texture.jpg</file>
+    </qresource>
+</RCC>
