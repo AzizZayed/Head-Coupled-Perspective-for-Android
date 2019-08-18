@@ -11,11 +11,6 @@ int main(int argc, char *argv[])
 
     int imageWidth = 240, imageHeight = 320;
 
-    QSurfaceFormat format;
-    format.setSamples(16);
-    format.setDepthBufferSize(24);
-    QSurfaceFormat::setDefaultFormat(format);
-
     app.setApplicationName("Head Coupled Display");
     app.setApplicationVersion("1.0");
 

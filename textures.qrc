@@ -3,5 +3,8 @@
         <file>checkerboard.jpg</file>
         <file>gridpat.png</file>
         <file>rubix_cube_texture.jpg</file>
+        <file>gridpat2.jpg</file>
+        <file>gridpat3.jpg</file>
+        <file>gridpat4.jpg</file>
     </qresource>
 </RCC>

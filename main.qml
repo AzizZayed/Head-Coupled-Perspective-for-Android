@@ -6,24 +6,24 @@ import QtQuick.Controls 2.12
 Window {
     visible: true
     color: "white"
-    width: 1080 //change for your screen
-    height: 2280 //change for your screen
+//    width: 1080 //change for your screen
+//    height: 2280 //change for your screen
 
     signal frameReady(var frame)
 
     Camera
     {
         id: camera
-        captureMode: Camera.CaptureViewfinder
+//        captureMode: Camera.CaptureViewfinder
         position: Camera.FrontFace
 
         // camera is rotated FOR MY DEVICE (Huawei p20). It may or may not be for yours.
         // Testing is required to verify this. Switch 'w' and 'h' to see if it works.
         viewfinder.resolution: Qt.size(h, w)
 
-        focus {
-            focusMode: Camera.FocusContinuous
-        }
+//        focus {
+//            focusMode: Camera.FocusContinuous
+//        }
     }
 
     VideoOutput

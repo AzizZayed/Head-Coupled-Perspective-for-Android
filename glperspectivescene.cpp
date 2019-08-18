@@ -47,7 +47,6 @@ void glPerspectiveScene::initializeGL()
 
     // Enable back face culling
     glEnable(GL_CULL_FACE);
-//    glEnable(GL_MULTISAMPLE);
 
     // Generate all VBOs
     arrayBuffer.create();
@@ -56,7 +55,7 @@ void glPerspectiveScene::initializeGL()
     wallIndexBuffer.create();
 
     // Use QBasicTimer because its faster than QTimer
-    timer.start(12, this);
+    timer.start(8, this);
 }
 
 void glPerspectiveScene::initShaders()
@@ -89,20 +88,18 @@ void glPerspectiveScene::initShaders()
 void glPerspectiveScene::loadTextures()
 {
     //cube textures
-//    cubeTexture = new QOpenGLTexture(QImage(":/rubix_cube_texture.jpg"));
     cubeTexture = new QOpenGLTexture(QOpenGLTexture::Target2D);
-    cubeTexture->setMinificationFilter(QOpenGLTexture::LinearMipMapLinear);
+    cubeTexture->setMinificationFilter(QOpenGLTexture::Linear);
     cubeTexture->setMagnificationFilter(QOpenGLTexture::Linear);
     cubeTexture->setWrapMode(QOpenGLTexture::Repeat);
     cubeTexture->setData(QImage(":/rubix_cube_texture.jpg"));
 
     //skybox textures
-//    skyTexture = new QOpenGLTexture(QImage(":/gridpat.png"));
     skyTexture = new QOpenGLTexture(QOpenGLTexture::Target2D);
-    skyTexture->setMinificationFilter(QOpenGLTexture::LinearMipMapLinear);
+    skyTexture->setMinificationFilter(QOpenGLTexture::Linear);
     skyTexture->setMagnificationFilter(QOpenGLTexture::Linear);
     skyTexture->setWrapMode(QOpenGLTexture::Repeat);
-    skyTexture->setData(QImage(":/gridpat.png"));
+    skyTexture->setData(QImage(":/gridpat3.jpg"));
 }
 
 void glPerspectiveScene::resizeGL(int w, int h)
@@ -122,23 +119,16 @@ void glPerspectiveScene::paintGL()
 
     //reset matrices
     viewFrustrum.setToIdentity();
-    transform.setToIdentity();
 
     float z = 0.0f;
     const QVector3D pa = QVector3D(-sceneWidth, -sceneHeight, z);
     const QVector3D pb = QVector3D(sceneWidth, -sceneHeight, z);
     const QVector3D pc = QVector3D(-sceneWidth, sceneHeight, z);
 
-    determineCameraPosition();
+    determineCameraPosition(); //magic
 
-    viewFrustrum = projFrustum(pa, pb, pc, cameraPosition, zNear, zFar);
+    viewFrustrum = projFrustum(pa, pb, pc, cameraPosition, zNear, zFar); //more magic
     program.setUniformValue("viewFrustrum", viewFrustrum);
-
-    transform.scale(QVector3D(sceneWidth, sceneHeight, 5.0f));
-    program.setUniformValue("transform", transform);
-
-    glCullFace(GL_FRONT);
-    drawSkyBox();
 
     transform.setToIdentity();
     transform.rotate((25.0f), QVector3D(1.0f, 0.0f, 0.0f));
@@ -147,6 +137,13 @@ void glPerspectiveScene::paintGL()
 
     glCullFace(GL_BACK);
     drawCube();
+
+    transform.setToIdentity();
+    transform.scale(QVector3D(sceneWidth, sceneHeight, 5.0f));
+    program.setUniformValue("transform", transform);
+
+    glCullFace(GL_FRONT);
+    drawSkyBox();
 }
 
 void glPerspectiveScene::determineCameraPosition()
@@ -170,7 +167,7 @@ void glPerspectiveScene::determineCameraPosition()
 
     cameraPosition.setX(x * ratio);
     cameraPosition.setY(-y * ratio);
-    cameraPosition.setZ(distFromCamera);
+    cameraPosition.setZ(distFromCamera / 2.33f);
 }
 
 void glPerspectiveScene::initAttributes()
@@ -211,10 +208,10 @@ void glPerspectiveScene::drawCube()
 void glPerspectiveScene::drawSkyBox()
 {
     wallArrayBuffer.bind();
-    wallArrayBuffer.allocate(backVertices, wallArrayBufferSize * sizeof(VertexData));
+    wallArrayBuffer.allocate(wallVertices, wallArrayBufferSize * sizeof(VertexData));
 
     wallIndexBuffer.bind();
-    wallIndexBuffer.allocate(backIndices, wallIndexBufferSize * sizeof(GLushort));
+    wallIndexBuffer.allocate(wallIndices, wallIndexBufferSize * sizeof(GLushort));
 
     initAttributes();
 
@@ -262,12 +259,11 @@ QMatrix4x4 glPerspectiveScene::projFrustum(
 
     // Rotate the projection to be non-perpendicular.
     memset(M, 0, 16 * sizeof (float));
-    M[0] = vr[0]; M[4] = vr[1]; M[ 8] = vr[2];
-    M[1] = vu[0]; M[5] = vu[1]; M[ 9] = vu[2];
-    M[2] = vn[0]; M[6] = vn[1]; M[10] = vn[2];
+    M[0] = vr.x(); M[4] = vr.y(); M[ 8] = vr.z();
+    M[1] = vu.x(); M[5] = vu.y(); M[ 9] = vu.z();
+    M[2] = vn.x(); M[6] = vn.y(); M[10] = vn.z();
     M[15] = 1.0f;
 
-    frustum.setToIdentity(); // glLoadIdentity();
     frustum.frustum(l, r, b, t, n, f); //    glFrustum(l, r, b, t, n, f);
     frustum = frustum * QMatrix4x4(M); //    glMultMatrixf(M);
 

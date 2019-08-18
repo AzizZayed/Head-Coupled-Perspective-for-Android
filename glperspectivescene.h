@@ -103,7 +103,7 @@ private:
     QOpenGLBuffer indexBuffer;
     int indexArraySize = 34, vertexArraySize = 24;
 
-    VertexData backVertices[20] =
+    VertexData wallVertices[20] =
     {
         // Vertex data for face 1
         {QVector3D( 1.0f, -1.0f,  1.0f), QVector2D(1.0f, 1.0f)}, // v4
@@ -135,7 +135,7 @@ private:
         {QVector3D(-1.0f,  1.0f, -1.0f), QVector2D(1.0f, 0.0f)}, // v22
         {QVector3D( 1.0f,  1.0f, -1.0f), QVector2D(0.0f, 0.0f)}  // v23
     };
-    GLushort backIndices[29] =
+    GLushort wallIndices[29] =
     {
         0,  1,  2,  3,  3,     // Face 0 - triangle strip ( v0,  v1,  v2,  v3)
         4,  4,  5,  6,  7,  7, // Face 1 - triangle strip ( v4,  v5,  v6,  v7)
@@ -151,7 +151,7 @@ private:
     QMatrix4x4 viewFrustrum;
     QMatrix4x4 transform;
 
-    float distance = 35.0f;
+    float distance = 15.0f;
     QVector3D cameraPosition;
     float zNear = 0.1f, zFar = 1000.0f;
     float aspect;
