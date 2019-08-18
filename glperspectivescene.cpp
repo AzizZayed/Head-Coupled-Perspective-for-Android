@@ -89,7 +89,7 @@ void glPerspectiveScene::initShaders()
 void glPerspectiveScene::loadTextures()
 {
     //cube textures
-//    cubeTexture = new QOpenGLTexture(QImage(":/checkerboard.jpg"));
+//    cubeTexture = new QOpenGLTexture(QImage(":/rubix_cube_texture.jpg"));
     cubeTexture = new QOpenGLTexture(QOpenGLTexture::Target2D);
     cubeTexture->setMinificationFilter(QOpenGLTexture::LinearMipMapLinear);
     cubeTexture->setMagnificationFilter(QOpenGLTexture::Linear);
