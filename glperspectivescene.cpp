@@ -1,7 +1,7 @@
 #include "glperspectivescene.h"
 
-glPerspectiveScene::glPerspectiveScene(FaceFeatureDetector *detector, QWidget *parent) :
-    QOpenGLWidget(parent),
+glPerspectiveScene::glPerspectiveScene(FaceFeatureDetector *detector, QOpenGLWindow::UpdateBehavior updateBehavior, QWindow *parent) :
+    QOpenGLWindow(updateBehavior, parent),
     featureDetector(detector),
     arrayBuffer(QOpenGLBuffer::VertexBuffer),
     indexBuffer(QOpenGLBuffer::IndexBuffer),
@@ -131,19 +131,19 @@ void glPerspectiveScene::paintGL()
     program.setUniformValue("viewFrustrum", viewFrustrum);
 
     transform.setToIdentity();
+    transform.scale(QVector3D(sceneWidth, sceneHeight, 5.0f));
+    program.setUniformValue("transform", transform);
+
+    glCullFace(GL_FRONT);
+    drawSkyBox();
+
+    transform.setToIdentity();
     transform.rotate((25.0f), QVector3D(1.0f, 0.0f, 0.0f));
     transform.rotate((45.0f), QVector3D(0.0f, 1.0f, 0.0f));
     program.setUniformValue("transform", transform);
 
     glCullFace(GL_BACK);
     drawCube();
-
-    transform.setToIdentity();
-    transform.scale(QVector3D(sceneWidth, sceneHeight, 5.0f));
-    program.setUniformValue("transform", transform);
-
-    glCullFace(GL_FRONT);
-    drawSkyBox();
 }
 
 void glPerspectiveScene::determineCameraPosition()
@@ -157,6 +157,7 @@ void glPerspectiveScene::determineCameraPosition()
 
     QSize imageSize = featureDetector->getImageSize();
     float distFromCamera = featureDetector->getDistanceFromCamera();
+    zFar = distFromCamera;
 
     int centerEyesX = (leye.x() + reye.right()) / 2;
     int centerEyesY = leye.y() + leye.height() / 2;
@@ -258,7 +259,7 @@ QMatrix4x4 glPerspectiveScene::projFrustum(
     t = QVector3D::dotProduct(vu, vc) * n / d; //    t = dot_product(vu, vc) * n / d;
 
     // Rotate the projection to be non-perpendicular.
-    memset(M, 0, 16 * sizeof (float));
+    memset(M, 0, 16 * sizeof(float));
     M[0] = vr.x(); M[4] = vr.y(); M[ 8] = vr.z();
     M[1] = vu.x(); M[5] = vu.y(); M[ 9] = vu.z();
     M[2] = vn.x(); M[6] = vn.y(); M[10] = vn.z();

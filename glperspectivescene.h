@@ -1,7 +1,7 @@
 #ifndef GLPERSPECTIVESCENE_H
 #define GLPERSPECTIVESCENE_H
 
-#include <QOpenGLWidget>
+#include <QOpenGLWindow>
 #include <QOpenGLFunctions>
 #include <QMatrix4x4>
 #include <QVector3D>
@@ -11,11 +11,11 @@
 #include <QOpenGLBuffer>
 #include "facefeaturedetector.h"
 
-class glPerspectiveScene : public QOpenGLWidget, protected QOpenGLFunctions
+class glPerspectiveScene : public QOpenGLWindow, protected QOpenGLFunctions
 {
     Q_OBJECT
 public:
-    explicit glPerspectiveScene(FaceFeatureDetector *detector, QWidget *parent = nullptr);
+    explicit glPerspectiveScene(FaceFeatureDetector *detector, QOpenGLWindow::UpdateBehavior updateBehavior = NoPartialUpdate, QWindow *parent = nullptr);
     ~glPerspectiveScene() override;
 
 protected:
@@ -153,7 +153,7 @@ private:
 
     float distance = 15.0f;
     QVector3D cameraPosition;
-    float zNear = 0.1f, zFar = 1000.0f;
+    float zNear = 0.1f, zFar = distance + 20.0f;
     float aspect;
 
     float sceneWidth, sceneHeight;
