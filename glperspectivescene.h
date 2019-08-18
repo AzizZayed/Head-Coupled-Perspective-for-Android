@@ -151,7 +151,7 @@ private:
     QMatrix4x4 viewFrustrum;
     QMatrix4x4 transform;
 
-    float distance = 15.0f;
+    float distance = 10.0f;
     QVector3D cameraPosition;
     float zNear = 0.1f, zFar = distance + 20.0f;
     float aspect;

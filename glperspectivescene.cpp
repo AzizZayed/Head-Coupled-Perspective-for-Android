@@ -162,13 +162,13 @@ void glPerspectiveScene::determineCameraPosition()
     int centerEyesX = (leye.x() + reye.right()) / 2;
     int centerEyesY = leye.y() + leye.height() / 2;
 
-    float ratio = 0.2f;
+    float ratio = 0.05f;
     int x = centerEyesX - imageSize.width() / 2;
     int y = centerEyesY - imageSize.height() / 2;
 
     cameraPosition.setX(x * ratio);
     cameraPosition.setY(-y * ratio);
-    cameraPosition.setZ(distFromCamera / 2.33f);
+    cameraPosition.setZ(distFromCamera / 3.5f);
 }
 
 void glPerspectiveScene::initAttributes()
