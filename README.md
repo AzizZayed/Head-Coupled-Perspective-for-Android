@@ -15,5 +15,6 @@ A perspective like the one in the videos is created by something called an [Off-
 
 As you can see, it's like looking at the cube through a small frame like your phone screen. Some knowledge of Linear Algebra may be required to understand the code behind this projection. The function that creates it is at line 225 in the *__glperspectivescene.cpp__* file.
 
+___
 
-
+There are many potential applications in medical imagery for such a project. Among them is to shift the perspective on an organ according to a surgeon's head. With this, he can just slightly shift his head to see the different perspectives on the part of the body he is performing his operation on.
