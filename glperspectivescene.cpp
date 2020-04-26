@@ -237,26 +237,26 @@ QMatrix4x4 glPerspectiveScene::projFrustum(
     float l, r, b, t, d, M[16];
 
     // Compute an orthonormal basis for the screen.
-    vr = pb - pa; //subtract(vr, pb, pa);
-    vu = pc - pa; //subtract(vu, pc, pa);
-    vr.normalize(); //normalize(vr);
-    vu.normalize(); //normalize(vu);
-    vn = QVector3D::crossProduct(vr, vu); //cross_product(vn, vr, vu);
-    vn.normalize(); //normalize(vn);
+    vr = pb - pa; 
+    vu = pc - pa; 
+    vr.normalize(); 
+    vu.normalize(); 
+    vn = QVector3D::crossProduct(vr, vu); 
+    vn.normalize(); 
 
     // Compute the screen corner vectors.
-    va = pa - pe; //subtract(va, pa, pe);
-    vb = pb - pe; //subtract(vb, pb, pe);
-    vc = pc - pe; //subtract(vc, pc, pe);
+    va = pa - pe; 
+    vb = pb - pe; 
+    vc = pc - pe; 
 
     // Find the distance from the eye to screen plane.
-    d = -QVector3D::dotProduct(va, vn); //d = -dot_product(va, vn);
+    d = -QVector3D::dotProduct(va, vn); 
 
     // Find the extent of the perpendicular projection.
-    l = QVector3D::dotProduct(vr, va) * n / d; //    l = dot_product(vr, va) * n / d;
-    r = QVector3D::dotProduct(vr, vb) * n / d; //    r = dot_product(vr, vb) * n / d;
-    b = QVector3D::dotProduct(vu, va) * n / d; //    b = dot_product(vu, va) * n / d;
-    t = QVector3D::dotProduct(vu, vc) * n / d; //    t = dot_product(vu, vc) * n / d;
+    l = QVector3D::dotProduct(vr, va) * n / d; 
+    r = QVector3D::dotProduct(vr, vb) * n / d; 
+    b = QVector3D::dotProduct(vu, va) * n / d; 
+    t = QVector3D::dotProduct(vu, vc) * n / d; 
 
     // Rotate the projection to be non-perpendicular.
     memset(M, 0, 16 * sizeof(float));
@@ -265,11 +265,11 @@ QMatrix4x4 glPerspectiveScene::projFrustum(
     M[2] = vn.x(); M[6] = vn.y(); M[10] = vn.z();
     M[15] = 1.0f;
 
-    frustum.frustum(l, r, b, t, n, f); //    glFrustum(l, r, b, t, n, f);
-    frustum = frustum * QMatrix4x4(M); //    glMultMatrixf(M);
+    frustum.frustum(l, r, b, t, n, f); 
+    frustum = frustum * QMatrix4x4(M);
 
     // Move the apex of the frustum to the origin.
-    frustum.translate(-pe); //    glTranslatef(-pe[0], -pe[1], -pe[2]);
+    frustum.translate(-pe);
 
     return frustum;
 }
